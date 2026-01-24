@@ -28,6 +28,7 @@ export type Database = {
           title: string
           tone: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           brand_voice?: Json | null
@@ -42,6 +43,7 @@ export type Database = {
           title: string
           tone: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           brand_voice?: Json | null
@@ -56,6 +58,7 @@ export type Database = {
           title?: string
           tone?: string
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -72,6 +75,7 @@ export type Database = {
           thumbnail_url: string | null
           title: string | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           aspect_ratio?: string
@@ -85,6 +89,7 @@ export type Database = {
           thumbnail_url?: string | null
           title?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           aspect_ratio?: string
@@ -98,6 +103,7 @@ export type Database = {
           thumbnail_url?: string | null
           title?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }

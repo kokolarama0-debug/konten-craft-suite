@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { DraftHistory, GeneratedContent, TemplateType } from '@/types/textGenerator';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface ContentDraftRow {
   id: string;
@@ -69,13 +70,21 @@ export const useContentDrafts = () => {
   const [drafts, setDrafts] = useState<DraftHistory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   // Fetch drafts from database
   const fetchDrafts = useCallback(async () => {
+    if (!user) {
+      setDrafts([]);
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('content_drafts')
         .select('*')
+        .eq('user_id', user.id)
         .order('updated_at', { ascending: false });
 
       if (error) throw error;
@@ -87,10 +96,16 @@ export const useContentDrafts = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [user]);
 
   // Set up realtime subscription
   useEffect(() => {
+    if (!user) {
+      setDrafts([]);
+      setIsLoading(false);
+      return;
+    }
+
     fetchDrafts();
 
     const channel = supabase
@@ -122,7 +137,7 @@ export const useContentDrafts = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [fetchDrafts]);
+  }, [fetchDrafts, user]);
 
   // Save draft to database
   const saveDraft = async (
@@ -131,6 +146,15 @@ export const useContentDrafts = () => {
     brandVoice?: Record<string, unknown>,
     productionOptions?: Record<string, unknown>
   ) => {
+    if (!user) {
+      toast({
+        title: 'Tidak bisa menyimpan',
+        description: 'Silakan login terlebih dahulu',
+        variant: 'destructive',
+      });
+      return false;
+    }
+
     try {
       const insertData = {
         title: content.title,
@@ -150,6 +174,7 @@ export const useContentDrafts = () => {
           subtitleFriendly: content.content.subtitleFriendly,
           metadata: content.metadata,
         } as unknown as Record<string, unknown>,
+        user_id: user.id,
       };
 
       const { error } = await supabase.from('content_drafts').insert(insertData as never);

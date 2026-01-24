@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 export interface GeneratedImage {
   id: string;
@@ -48,13 +49,21 @@ export const useGeneratedImages = () => {
   const [images, setImages] = useState<GeneratedImage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   // Fetch images from database
   const fetchImages = useCallback(async () => {
+    if (!user) {
+      setImages([]);
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('generated_images')
         .select('*')
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -66,10 +75,16 @@ export const useGeneratedImages = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [user]);
 
   // Set up realtime subscription
   useEffect(() => {
+    if (!user) {
+      setImages([]);
+      setIsLoading(false);
+      return;
+    }
+
     fetchImages();
 
     const channel = supabase
@@ -101,7 +116,7 @@ export const useGeneratedImages = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [fetchImages]);
+  }, [fetchImages, user]);
 
   // Save new image
   const saveImage = async (
@@ -113,6 +128,15 @@ export const useGeneratedImages = () => {
       title?: string;
     }
   ) => {
+    if (!user) {
+      toast({
+        title: 'Tidak bisa menyimpan',
+        description: 'Silakan login terlebih dahulu',
+        variant: 'destructive',
+      });
+      return null;
+    }
+
     try {
       const insertData = {
         prompt: imageData.prompt,
@@ -120,6 +144,7 @@ export const useGeneratedImages = () => {
         aspect_ratio: imageData.aspectRatio,
         image_url: imageData.imageUrl,
         title: imageData.title || imageData.prompt.substring(0, 50),
+        user_id: user.id,
       };
 
       const { data, error } = await supabase
