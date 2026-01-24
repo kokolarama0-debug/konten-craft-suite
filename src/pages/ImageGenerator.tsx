@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ImageIcon, Download, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const styles = [
   { value: "realistic", label: "Photorealistic" },
@@ -43,17 +44,83 @@ const ImageGenerator = () => {
     }
 
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    
-    // Use a placeholder image for demonstration
-    setGeneratedImage(
-      `https://images.unsplash.com/photo-1676299081847-824916de030a?w=800&auto=format&fit=crop`
-    );
-    setIsLoading(false);
-    toast({
-      title: "Image generated!",
-      description: "Your image has been created successfully",
-    });
+    setGeneratedImage(null);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-image', {
+        body: {
+          prompt: prompt.trim(),
+          style,
+          aspectRatio,
+        },
+      });
+
+      if (error) {
+        throw new Error(error.message || 'Failed to generate image');
+      }
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      if (!data.imageUrl) {
+        throw new Error('No image URL in response');
+      }
+
+      setGeneratedImage(data.imageUrl);
+      toast({
+        title: "Image generated!",
+        description: "Your image has been created successfully",
+      });
+    } catch (error) {
+      console.error('Image generation error:', error);
+      toast({
+        title: "Generation failed",
+        description: error instanceof Error ? error.message : "Failed to generate image",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDownload = async () => {
+    if (!generatedImage) return;
+
+    try {
+      // For base64 images, create a download link
+      if (generatedImage.startsWith('data:')) {
+        const link = document.createElement('a');
+        link.href = generatedImage;
+        link.download = `generated-image-${Date.now()}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        // For URL images, fetch and download
+        const response = await fetch(generatedImage);
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `generated-image-${Date.now()}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+
+      toast({
+        title: "Downloaded!",
+        description: "Image saved to your device",
+      });
+    } catch (error) {
+      toast({
+        title: "Download failed",
+        description: "Could not download the image",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -161,7 +228,10 @@ const ImageGenerator = () => {
                     <RefreshCw className="h-3.5 w-3.5" />
                     Regenerate
                   </button>
-                  <button className="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground">
+                  <button 
+                    onClick={handleDownload}
+                    className="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                  >
                     <Download className="h-3.5 w-3.5" />
                     Download
                   </button>
