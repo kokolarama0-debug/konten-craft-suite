@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, CalendarClock, List, CalendarDays } from "lucide-react";
+import { Plus, CalendarClock, List, CalendarDays, LayoutGrid } from "lucide-react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/button";
 import { ScheduleList } from "@/components/scheduling/ScheduleList";
 import { CalendarView } from "@/components/scheduling/CalendarView";
+import { WeeklyScheduleView } from "@/components/scheduling/WeeklyScheduleView";
 import { useScheduledContent } from "@/hooks/useScheduledContent";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const ContentScheduling = () => {
   const navigate = useNavigate();
-  const [viewMode, setViewMode] = useState<"list" | "calendar">("list");
+  const [viewMode, setViewMode] = useState<"list" | "weekly" | "calendar">("weekly");
   const {
     schedules,
     isLoading,
@@ -33,10 +34,13 @@ const ContentScheduling = () => {
             <ToggleGroup
               type="single"
               value={viewMode}
-              onValueChange={(value) => value && setViewMode(value as "list" | "calendar")}
+              onValueChange={(value) => value && setViewMode(value as "list" | "weekly" | "calendar")}
             >
               <ToggleGroupItem value="list" aria-label="List view">
                 <List className="h-4 w-4" />
+              </ToggleGroupItem>
+              <ToggleGroupItem value="weekly" aria-label="Weekly view">
+                <LayoutGrid className="h-4 w-4" />
               </ToggleGroupItem>
               <ToggleGroupItem value="calendar" aria-label="Calendar view">
                 <CalendarDays className="h-4 w-4" />
@@ -49,7 +53,7 @@ const ContentScheduling = () => {
           </div>
         </div>
 
-        {viewMode === "list" ? (
+        {viewMode === "list" && (
           <ScheduleList
             schedules={schedules}
             isLoading={isLoading}
@@ -57,7 +61,16 @@ const ContentScheduling = () => {
             onSendReminder={sendReminder}
             onDelete={deleteSchedule}
           />
-        ) : (
+        )}
+        {viewMode === "weekly" && (
+          <WeeklyScheduleView
+            schedules={schedules}
+            onMarkPosted={markAsPosted}
+            onSendReminder={sendReminder}
+            onDelete={deleteSchedule}
+          />
+        )}
+        {viewMode === "calendar" && (
           <CalendarView
             schedules={schedules}
             onMarkPosted={markAsPosted}
