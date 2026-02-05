@@ -10,9 +10,10 @@ import { SlideImage, AudioTrack, TransitionType } from "@/types/videoGenerator";
 import { ImageSourceSelector } from "@/components/video-generator/ImageSourceSelector";
 import { AudioSourceSelector } from "@/components/video-generator/AudioSourceSelector";
 import { TransitionSelector } from "@/components/video-generator/TransitionSelector";
- import { AspectRatioSelector, VideoAspectRatio, getAspectRatioDimensions } from "@/components/video-generator/AspectRatioSelector";
+import { AspectRatioSelector, VideoAspectRatio, getAspectRatioDimensions } from "@/components/video-generator/AspectRatioSelector";
 import { SlideshowPreview } from "@/components/video-generator/SlideshowPreview";
 import { VideoProjectGallery } from "@/components/video-generator/VideoProjectGallery";
+import { VideoSourceSelector, UploadedVideo } from "@/components/video-generator/VideoSourceSelector";
 import { renderVideo, downloadBlob } from "@/lib/videoRenderer";
 import { useVideoProjects, VideoProject } from "@/hooks/useVideoProjects";
 
@@ -28,7 +29,8 @@ const VideoGenerator = () => {
   const [slides, setSlides] = useState<SlideImage[]>([]);
   const [audio, setAudio] = useState<AudioTrack | null>(null);
   const [transition, setTransition] = useState<TransitionType>('fade');
-   const [aspectRatio, setAspectRatio] = useState<VideoAspectRatio>('16:9');
+  const [aspectRatio, setAspectRatio] = useState<VideoAspectRatio>('16:9');
+  const [uploadedVideo, setUploadedVideo] = useState<UploadedVideo | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [isGenerated, setIsGenerated] = useState(false);
   const [isRendering, setIsRendering] = useState(false);
@@ -163,7 +165,8 @@ const VideoGenerator = () => {
     setSlides([]);
     setAudio(null);
     setTransition('fade');
-     setAspectRatio('16:9');
+    setAspectRatio('16:9');
+    setUploadedVideo(undefined);
     setProjectTitle("Untitled Video");
     setEditingProjectId(null);
     setIsGenerated(false);
@@ -271,10 +274,18 @@ const VideoGenerator = () => {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            <ImageSourceSelector
-              slides={slides}
-              onSlidesChange={setSlides}
-            />
+            <div className="space-y-6">
+              <ImageSourceSelector
+                slides={slides}
+                onSlidesChange={setSlides}
+              />
+
+              <VideoSourceSelector
+                uploadedVideo={uploadedVideo}
+                onVideoUpload={setUploadedVideo}
+                onVideoRemove={() => setUploadedVideo(undefined)}
+              />
+            </div>
 
             <div className="space-y-6">
               <AudioSourceSelector
@@ -287,11 +298,11 @@ const VideoGenerator = () => {
                 transition={transition}
                 onTransitionChange={setTransition}
               />
- 
-               <AspectRatioSelector
-                 aspectRatio={aspectRatio}
-                 onAspectRatioChange={setAspectRatio}
-               />
+
+              <AspectRatioSelector
+                aspectRatio={aspectRatio}
+                onAspectRatioChange={setAspectRatio}
+              />
             </div>
           </div>
 
