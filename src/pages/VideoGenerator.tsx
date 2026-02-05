@@ -10,6 +10,7 @@ import { SlideImage, AudioTrack, TransitionType } from "@/types/videoGenerator";
 import { ImageSourceSelector } from "@/components/video-generator/ImageSourceSelector";
 import { AudioSourceSelector } from "@/components/video-generator/AudioSourceSelector";
 import { TransitionSelector } from "@/components/video-generator/TransitionSelector";
+ import { AspectRatioSelector, VideoAspectRatio, getAspectRatioDimensions } from "@/components/video-generator/AspectRatioSelector";
 import { SlideshowPreview } from "@/components/video-generator/SlideshowPreview";
 import { VideoProjectGallery } from "@/components/video-generator/VideoProjectGallery";
 import { renderVideo, downloadBlob } from "@/lib/videoRenderer";
@@ -27,6 +28,7 @@ const VideoGenerator = () => {
   const [slides, setSlides] = useState<SlideImage[]>([]);
   const [audio, setAudio] = useState<AudioTrack | null>(null);
   const [transition, setTransition] = useState<TransitionType>('fade');
+   const [aspectRatio, setAspectRatio] = useState<VideoAspectRatio>('16:9');
   const [isLoading, setIsLoading] = useState(false);
   const [isGenerated, setIsGenerated] = useState(false);
   const [isRendering, setIsRendering] = useState(false);
@@ -111,6 +113,7 @@ const VideoGenerator = () => {
         slides,
         audio,
         transition,
+         aspectRatio,
         totalDuration,
         thumbnailUrl,
         status: isGenerated ? 'completed' : 'draft',
@@ -129,6 +132,7 @@ const VideoGenerator = () => {
         slides,
         audio,
         transition,
+         aspectRatio,
         totalDuration,
         thumbnailUrl,
         status: isGenerated ? 'completed' : 'draft',
@@ -144,6 +148,7 @@ const VideoGenerator = () => {
     setSlides(project.slides);
     setAudio(project.audio);
     setTransition(project.transition);
+     setAspectRatio(project.aspectRatio || '16:9');
     setProjectTitle(project.title);
     setEditingProjectId(project.id);
     setIsGenerated(project.status === 'completed');
@@ -158,6 +163,7 @@ const VideoGenerator = () => {
     setSlides([]);
     setAudio(null);
     setTransition('fade');
+     setAspectRatio('16:9');
     setProjectTitle("Untitled Video");
     setEditingProjectId(null);
     setIsGenerated(false);
@@ -175,12 +181,14 @@ const VideoGenerator = () => {
         description: "This may take a few moments depending on video length.",
       });
 
+       const dimensions = getAspectRatioDimensions(aspectRatio);
+ 
       const videoBlob = await renderVideo({
         slides,
         audio,
         transition,
-        width: 1920,
-        height: 1080,
+         width: dimensions.width,
+         height: dimensions.height,
         fps: 30,
         onProgress: (progress) => {
           setRenderProgress(progress);
@@ -279,6 +287,11 @@ const VideoGenerator = () => {
                 transition={transition}
                 onTransitionChange={setTransition}
               />
+ 
+               <AspectRatioSelector
+                 aspectRatio={aspectRatio}
+                 onAspectRatioChange={setAspectRatio}
+               />
             </div>
           </div>
 
@@ -295,6 +308,7 @@ const VideoGenerator = () => {
             slides={slides}
             audio={audio}
             transition={transition}
+             aspectRatio={aspectRatio}
             isGenerating={isLoading}
             isGenerated={isGenerated}
             renderProgress={renderProgress}

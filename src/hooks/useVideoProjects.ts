@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { SlideImage, AudioTrack, TransitionType } from '@/types/videoGenerator';
+ import { VideoAspectRatio } from '@/components/video-generator/AspectRatioSelector';
 
 export interface VideoProject {
   id: string;
@@ -10,6 +11,7 @@ export interface VideoProject {
   slides: SlideImage[];
   audio: AudioTrack | null;
   transition: TransitionType;
+   aspectRatio: VideoAspectRatio;
   totalDuration: number;
   thumbnailUrl?: string;
   isFavorite: boolean;
@@ -25,6 +27,7 @@ interface VideoProjectRow {
   slides: SlideImage[];
   audio: AudioTrack | null;
   transition: string;
+   aspect_ratio: string;
   total_duration: number;
   thumbnail_url: string | null;
   is_favorite: boolean;
@@ -39,6 +42,7 @@ const mapRowToProject = (row: VideoProjectRow): VideoProject => ({
   slides: row.slides || [],
   audio: row.audio,
   transition: row.transition as TransitionType,
+   aspectRatio: row.aspect_ratio as VideoAspectRatio,
   totalDuration: row.total_duration,
   thumbnailUrl: row.thumbnail_url || undefined,
   isFavorite: row.is_favorite,
@@ -126,6 +130,7 @@ export const useVideoProjects = () => {
     slides: SlideImage[];
     audio: AudioTrack | null;
     transition: TransitionType;
+     aspectRatio?: VideoAspectRatio;
     totalDuration: number;
     thumbnailUrl?: string;
     status?: 'draft' | 'completed';
@@ -147,6 +152,7 @@ export const useVideoProjects = () => {
           slides: JSON.parse(JSON.stringify(projectData.slides)),
           audio: projectData.audio ? JSON.parse(JSON.stringify(projectData.audio)) : null,
           transition: projectData.transition,
+           aspect_ratio: projectData.aspectRatio || '16:9',
           total_duration: projectData.totalDuration,
           thumbnail_url: projectData.thumbnailUrl || null,
           status: projectData.status || 'draft',
@@ -182,6 +188,7 @@ export const useVideoProjects = () => {
       slides?: SlideImage[];
       audio?: AudioTrack | null;
       transition?: TransitionType;
+       aspectRatio?: VideoAspectRatio;
       totalDuration?: number;
       thumbnailUrl?: string;
       isFavorite?: boolean;
@@ -194,6 +201,7 @@ export const useVideoProjects = () => {
       if (updates.slides !== undefined) updateData.slides = updates.slides;
       if (updates.audio !== undefined) updateData.audio = updates.audio;
       if (updates.transition !== undefined) updateData.transition = updates.transition;
+       if (updates.aspectRatio !== undefined) updateData.aspect_ratio = updates.aspectRatio;
       if (updates.totalDuration !== undefined) updateData.total_duration = updates.totalDuration;
       if (updates.thumbnailUrl !== undefined) updateData.thumbnail_url = updates.thumbnailUrl;
       if (updates.isFavorite !== undefined) updateData.is_favorite = updates.isFavorite;

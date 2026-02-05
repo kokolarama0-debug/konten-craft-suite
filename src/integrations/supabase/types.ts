@@ -109,6 +109,7 @@ export type Database = {
       }
       video_projects: {
         Row: {
+          aspect_ratio: string
           audio: Json | null
           created_at: string
           id: string
@@ -123,6 +124,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          aspect_ratio?: string
           audio?: Json | null
           created_at?: string
           id?: string
@@ -137,6 +139,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          aspect_ratio?: string
           audio?: Json | null
           created_at?: string
           id?: string
