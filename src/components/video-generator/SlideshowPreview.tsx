@@ -3,11 +3,13 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Download, Loader2 } from "lucide-react";
 import { SlideImage, AudioTrack, TransitionType } from "@/types/videoGenerator";
+ import { VideoAspectRatio } from "@/components/video-generator/AspectRatioSelector";
 
 interface SlideshowPreviewProps {
   slides: SlideImage[];
   audio: AudioTrack | null;
   transition: TransitionType;
+   aspectRatio?: VideoAspectRatio;
   isGenerating: boolean;
   isGenerated: boolean;
   renderProgress: number;
@@ -19,6 +21,7 @@ export const SlideshowPreview = ({
   slides,
   audio,
   transition,
+   aspectRatio = '16:9',
   isGenerating,
   isGenerated,
   renderProgress,
@@ -134,6 +137,23 @@ export const SlideshowPreview = ({
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+   const getAspectRatioClass = () => {
+     switch (aspectRatio) {
+       case '16:9':
+         return 'aspect-video';
+       case '9:16':
+         return 'aspect-[9/16]';
+       case '1:1':
+         return 'aspect-square';
+       case '4:3':
+         return 'aspect-[4/3]';
+       case '4:5':
+         return 'aspect-[4/5]';
+       default:
+         return 'aspect-video';
+     }
+   };
+ 
   return (
     <div className="glass-card h-full rounded-xl p-6">
       <div className="mb-4 flex items-center justify-between">
@@ -161,7 +181,7 @@ export const SlideshowPreview = ({
         )}
       </div>
 
-      <div className="relative aspect-video overflow-hidden rounded-lg border border-border bg-secondary/30">
+       <div className={`relative ${getAspectRatioClass()} overflow-hidden rounded-lg border border-border bg-secondary/30`}>
         {slides.length > 0 ? (
           <>
             <div className={`relative h-full w-full ${getTransitionClass()}`}>
@@ -307,6 +327,10 @@ export const SlideshowPreview = ({
             <p className="text-lg font-semibold text-foreground">{audio ? 'Yes' : 'No'}</p>
             <p className="text-xs text-muted-foreground">Audio</p>
           </div>
+           <div className="rounded-lg bg-secondary/50 p-3">
+             <p className="text-lg font-semibold text-foreground">{aspectRatio}</p>
+             <p className="text-xs text-muted-foreground">Ratio</p>
+           </div>
         </div>
       )}
     </div>
