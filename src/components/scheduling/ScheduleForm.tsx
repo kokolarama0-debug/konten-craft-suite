@@ -237,7 +237,7 @@ export const ScheduleForm = ({ onSubmit, initialData, isEditing }: ScheduleFormP
                 variant="outline"
                 size="sm"
                 onClick={handleGenerateCaption}
-                disabled={isGeneratingCaption || !selectedContent}
+                disabled={isGeneratingCaption}
               >
                 {isGeneratingCaption ? (
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
