@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { EditableField } from '@/components/scheduling/EditableField';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TemplateField } from '@/types/textGenerator';
 import { Plus, X } from 'lucide-react';
@@ -51,11 +51,12 @@ export const TemplateFields = ({ fields, values, onChange }: TemplateFieldsProps
           )}
           
           {field.type === 'textarea' && (
-            <Textarea
+            <EditableField
               value={(values[field.id] as string) || ''}
-              onChange={(e) => onChange(field.id, e.target.value)}
+              onChange={(val) => onChange(field.id, val)}
+              multiline
               placeholder={field.placeholder}
-              className="mt-1.5 min-h-[80px]"
+              className="mt-1.5"
             />
           )}
           

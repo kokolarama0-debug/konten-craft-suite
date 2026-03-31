@@ -4,8 +4,8 @@ import { Calendar, Clock, Mail, MessageSquare, FileText, Hash, Sparkles, Loader2
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { EditableField } from "./EditableField";
 import {
   Select,
   SelectContent,
@@ -267,12 +267,11 @@ const handleGenerateCaption = async () => {
                 Auto Generate AI
               </Button>
             </div>
-            <Textarea
-              id="caption"
+            <EditableField
+              value={formData.caption || ""}
+              onChange={(val) => setFormData(prev => ({ ...prev, caption: val }))}
+              multiline
               placeholder="Tulis caption untuk konten atau generate dengan AI..."
-              rows={4}
-              value={formData.caption}
-              onChange={(e) => setFormData(prev => ({ ...prev, caption: e.target.value }))}
             />
           </div>
 
@@ -311,12 +310,11 @@ const handleGenerateCaption = async () => {
 
           <div className="space-y-2">
             <Label htmlFor="notes">Catatan (opsional)</Label>
-            <Textarea
-              id="notes"
+            <EditableField
+              value={formData.notes || ""}
+              onChange={(val) => setFormData(prev => ({ ...prev, notes: val }))}
+              multiline
               placeholder="Catatan tambahan..."
-              rows={2}
-              value={formData.notes}
-              onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
             />
           </div>
         </CardContent>

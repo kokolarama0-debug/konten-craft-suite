@@ -2,8 +2,8 @@ import { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { GenerateButton } from "@/components/ui/GenerateButton";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { EditableField } from "@/components/scheduling/EditableField";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ImageIcon, Download, RefreshCw, Save } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -170,12 +170,12 @@ const ImageGenerator = () => {
                 <Label htmlFor="prompt" className="text-sm font-medium text-foreground">
                   Image Description
                 </Label>
-                <Textarea
-                  id="prompt"
-                  placeholder="E.g., A serene mountain landscape at sunset with a calm lake reflection, cinematic lighting..."
+                <EditableField
                   value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                  className="mt-2 min-h-[120px] resize-none border-border bg-secondary/50 text-foreground placeholder:text-muted-foreground focus:border-primary"
+                  onChange={setPrompt}
+                  multiline
+                  placeholder="E.g., A serene mountain landscape at sunset with a calm lake reflection, cinematic lighting..."
+                  className="mt-2"
                 />
               </div>
 

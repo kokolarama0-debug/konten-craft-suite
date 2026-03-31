@@ -1,7 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { EditableField } from "@/components/scheduling/EditableField";
 import { FileText, Edit3, History } from "lucide-react";
 import { TextSourceType } from "@/types/voiceDubbing";
 import { DraftHistory } from "@/types/textGenerator";
@@ -119,11 +119,11 @@ export const TextSourceSelector = ({
 
       {sourceType === 'manual' && (
         <div className="space-y-2">
-          <Textarea
-            placeholder="Ketik atau paste naskah voice over di sini...&#10;&#10;Mendukung:&#10;• Paragraf&#10;• Line break&#10;• Tanda baca"
+          <EditableField
             value={manualText}
-            onChange={(e) => onManualTextChange(e.target.value)}
-            className="min-h-[200px] resize-none border-border bg-secondary/50"
+            onChange={onManualTextChange}
+            multiline
+            placeholder="Ketik atau paste naskah voice over di sini..."
           />
           <p className="text-xs text-muted-foreground text-right">
             {manualText.length} karakter • {manualText.split(/\s+/).filter(w => w).length} kata
