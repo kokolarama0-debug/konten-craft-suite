@@ -1,7 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { EditableField } from "@/components/scheduling/EditableField";
 import { FileText, Edit3, History } from "lucide-react";
 import { TextSourceType } from "@/types/voiceDubbing";
 import { DraftHistory } from "@/types/textGenerator";
