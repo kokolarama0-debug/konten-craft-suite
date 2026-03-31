@@ -4,8 +4,8 @@ import { Calendar, Clock, Mail, MessageSquare, FileText, Hash, Sparkles, Loader2
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { EditableField } from "./EditableField";
 import {
   Select,
   SelectContent,
