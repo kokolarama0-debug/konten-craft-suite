@@ -42,31 +42,30 @@ const Index = () => {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <div className="mb-12 animate-fade-in">
-        <h1 className="font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+      <div className="mb-8 md:mb-12 animate-fade-in">
+        <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
           Welcome to{" "}
           <span className="gradient-text">AI Studio</span>
         </h1>
-        <p className="mt-3 max-w-2xl text-lg text-muted-foreground">
-          Your all-in-one creative toolkit. Generate text, voice, images, and videos
-          with the power of artificial intelligence.
+        <p className="mt-2 md:mt-3 max-w-2xl text-sm md:text-lg text-muted-foreground">
+          Your all-in-one creative toolkit powered by AI.
         </p>
       </div>
 
       {/* Stats */}
-      <div className="mb-10 flex gap-4">
+      <div className="mb-8 md:mb-10 grid grid-cols-2 gap-3 md:flex md:gap-4">
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="glass-card flex items-center gap-4 rounded-xl px-6 py-4 animate-fade-in"
+            className="glass-card flex items-center gap-3 md:gap-4 rounded-xl px-4 md:px-6 py-3 md:py-4 animate-fade-in"
             style={{ animationDelay: "0.1s" }}
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/20">
-              <stat.icon className="h-5 w-5 text-primary" />
+            <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-lg bg-primary/20">
+              <stat.icon className="h-4 w-4 md:h-5 md:w-5 text-primary" />
             </div>
-            <div>
-              <p className="font-display text-2xl font-bold text-foreground">{stat.value}</p>
-              <p className="text-sm text-muted-foreground">{stat.label}</p>
+            <div className="min-w-0">
+              <p className="font-display text-xl md:text-2xl font-bold text-foreground">{stat.value}</p>
+              <p className="text-xs md:text-sm text-muted-foreground truncate">{stat.label}</p>
             </div>
           </div>
         ))}
@@ -77,7 +76,7 @@ const Index = () => {
         <h2 className="mb-6 font-display text-xl font-semibold text-foreground">
           Creation Tools
         </h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 md:gap-6 lg:grid-cols-4">
           {tools.map((tool, index) => (
             <div
               key={tool.path}
