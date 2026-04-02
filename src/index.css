@@ -132,4 +132,12 @@
     0%, 100% { box-shadow: var(--glow-primary); }
     50% { box-shadow: 0 0 60px hsla(192, 91%, 55%, 0.5); }
   }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
 }
