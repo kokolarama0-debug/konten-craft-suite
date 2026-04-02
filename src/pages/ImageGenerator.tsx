@@ -161,10 +161,10 @@ const ImageGenerator = () => {
         description="Generate stunning visuals from text descriptions"
       />
 
-      <div className="grid gap-8 lg:grid-cols-2">
+      <div className="grid gap-6 md:gap-8 lg:grid-cols-2">
         {/* Input Section */}
-        <div className="space-y-6 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-          <div className="glass-card rounded-xl p-6">
+        <div className="space-y-5 md:space-y-6 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+          <div className="glass-card rounded-xl p-4 md:p-6">
             <div className="space-y-5">
               <div>
                 <Label htmlFor="prompt" className="text-sm font-medium text-foreground">
@@ -225,11 +225,11 @@ const ImageGenerator = () => {
           </div>
 
           {/* Generated Output */}
-          <div className="glass-card rounded-xl p-6">
-            <div className="mb-4 flex items-center justify-between">
+          <div className="glass-card rounded-xl p-4 md:p-6">
+            <div className="mb-3 md:mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <Label className="text-sm font-medium text-foreground">Generated Image</Label>
               {generatedImage && (
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-1.5 md:gap-2">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -306,8 +306,8 @@ const ImageGenerator = () => {
           </div>
 
           {/* Tips */}
-          <div className="glass-card rounded-xl p-6">
-            <Label className="text-sm font-medium text-foreground">Tips for better results</Label>
+          <div className="glass-card rounded-xl p-4 md:p-6">
+            <Label className="text-sm font-medium text-foreground">Tips</Label>
             <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
@@ -326,7 +326,7 @@ const ImageGenerator = () => {
         </div>
 
         {/* Gallery Section */}
-        <div className="animate-fade-in lg:sticky lg:top-8" style={{ animationDelay: "0.2s" }}>
+        <div className="animate-fade-in lg:sticky lg:top-8 lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto" style={{ animationDelay: "0.2s" }}>
           <ImageGallery
             images={images}
             isLoading={isLoadingImages}

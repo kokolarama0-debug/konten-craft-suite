@@ -24,31 +24,33 @@ const ContentScheduling = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <PageHeader
             icon={CalendarClock}
             title="Content Scheduling"
-            description="Jadwalkan konten dan terima reminder otomatis via Email atau WhatsApp"
+            description="Jadwalkan konten dan terima reminder otomatis"
           />
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
             <ToggleGroup
               type="single"
               value={viewMode}
               onValueChange={(value) => value && setViewMode(value as "list" | "weekly" | "calendar")}
+              className="shrink-0"
             >
-              <ToggleGroupItem value="list" aria-label="List view">
-                <List className="h-4 w-4" />
+              <ToggleGroupItem value="list" aria-label="List view" className="h-8 w-8 md:h-9 md:w-9">
+                <List className="h-3.5 w-3.5 md:h-4 md:w-4" />
               </ToggleGroupItem>
-              <ToggleGroupItem value="weekly" aria-label="Weekly view">
-                <LayoutGrid className="h-4 w-4" />
+              <ToggleGroupItem value="weekly" aria-label="Weekly view" className="h-8 w-8 md:h-9 md:w-9">
+                <LayoutGrid className="h-3.5 w-3.5 md:h-4 md:w-4" />
               </ToggleGroupItem>
-              <ToggleGroupItem value="calendar" aria-label="Calendar view">
-                <CalendarDays className="h-4 w-4" />
+              <ToggleGroupItem value="calendar" aria-label="Calendar view" className="h-8 w-8 md:h-9 md:w-9">
+                <CalendarDays className="h-3.5 w-3.5 md:h-4 md:w-4" />
               </ToggleGroupItem>
             </ToggleGroup>
-            <Button onClick={() => navigate("/scheduling/create")}>
-              <Plus className="h-4 w-4 mr-2" />
-              Buat Jadwal
+            <Button onClick={() => navigate("/scheduling/create")} size="sm" className="md:size-default">
+              <Plus className="h-4 w-4 mr-1 md:mr-2" />
+              <span className="hidden sm:inline">Buat Jadwal</span>
+              <span className="sm:hidden">Baru</span>
             </Button>
           </div>
         </div>

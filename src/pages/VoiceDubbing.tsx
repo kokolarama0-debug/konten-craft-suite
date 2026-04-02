@@ -197,8 +197,8 @@ const VoiceDubbing = () => {
       <div className="grid gap-6 lg:grid-cols-[1fr,400px]">
         {/* Left Column - Input */}
         <div className="space-y-6">
-          <div className="glass-card rounded-xl p-6 animate-fade-in">
-            <div className="space-y-6">
+          <div className="glass-card rounded-xl p-4 md:p-6 animate-fade-in">
+            <div className="space-y-5 md:space-y-6">
               {/* Text Source */}
               <TextSourceSelector
                 sourceType={textSource}

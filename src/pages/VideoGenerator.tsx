@@ -233,12 +233,12 @@ const VideoGenerator = () => {
         description="Create slideshow videos by combining images and audio"
       />
 
-      <div className="grid gap-8 lg:grid-cols-3">
+      <div className="grid gap-6 md:gap-8 lg:grid-cols-3">
         {/* Input Section */}
-        <div className="lg:col-span-2 space-y-6 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+        <div className="lg:col-span-2 space-y-5 md:space-y-6 animate-fade-in" style={{ animationDelay: "0.1s" }}>
           {/* Project Title & Actions */}
-          <div className="glass-card rounded-xl p-4">
-            <div className="flex flex-col sm:flex-row gap-3">
+          <div className="glass-card rounded-xl p-3 md:p-4">
+            <div className="flex flex-col gap-3">
               <div className="flex-1">
                 <Input
                   value={projectTitle}
@@ -273,7 +273,7 @@ const VideoGenerator = () => {
             )}
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2">
             <div className="space-y-6">
               <ImageSourceSelector
                 slides={slides}

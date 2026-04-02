@@ -213,8 +213,8 @@ const TextGenerator = () => {
         {/* Left Column - Main Input & Output */}
         <div className="space-y-6">
           {/* Input Section */}
-          <div className="glass-card rounded-xl p-6 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-            <div className="space-y-6">
+          <div className="glass-card rounded-xl p-4 md:p-6 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+            <div className="space-y-5 md:space-y-6">
               {/* Template Selector */}
               <TemplateSelector
                 selectedTemplate={selectedTemplate}
@@ -222,7 +222,7 @@ const TextGenerator = () => {
               />
 
               {/* Tone & Duration Row */}
-              <div className="grid gap-6 md:grid-cols-2">
+              <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2">
                 <ToneSelector selectedTone={tone} onSelectTone={setTone} />
                 <DurationControl 
                   duration={duration} 
@@ -239,7 +239,7 @@ const TextGenerator = () => {
               />
 
               {/* Template-specific Fields */}
-              <div className="border-t border-border pt-6">
+              <div className="border-t border-border pt-5 md:pt-6">
                 <TemplateFields
                   fields={currentTemplate.fields}
                   values={fieldValues}
@@ -263,30 +263,32 @@ const TextGenerator = () => {
               />
 
               {/* Action Buttons */}
-              <div className="flex gap-3">
+              <div className="flex flex-wrap gap-2 md:gap-3">
                 <GenerateButton
                   onClick={handleGenerate}
                   isLoading={isLoading}
-                  className="flex-1"
+                  className="flex-1 min-w-0"
                 >
                   Generate Konten
                 </GenerateButton>
                 <Button
                   variant="outline"
                   onClick={handleReset}
-                  className="gap-2"
+                  size="icon"
+                  className="shrink-0 md:size-auto md:gap-2 md:px-4"
                 >
                   <RotateCcw className="h-4 w-4" />
-                  Reset
+                  <span className="hidden md:inline">Reset</span>
                 </Button>
                 {generatedContent && (
                   <Button
                     variant="outline"
                     onClick={handleSaveDraft}
-                    className="gap-2"
+                    size="icon"
+                    className="shrink-0 md:size-auto md:gap-2 md:px-4"
                   >
                     <Save className="h-4 w-4" />
-                    Simpan
+                    <span className="hidden md:inline">Simpan</span>
                   </Button>
                 )}
               </div>

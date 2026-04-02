@@ -62,9 +62,9 @@ const VideoEditor = () => {
         description="Process and edit videos using FFmpeg API"
       />
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-5 md:gap-6 lg:grid-cols-2">
         {/* Left Column - Input & Operations */}
-        <div className="space-y-6">
+        <div className="space-y-5 md:space-y-6">
           {/* Video Source */}
           <div className="animate-fade-in">
             <h3 className="mb-3 font-medium text-foreground">Video Source</h3>
@@ -102,7 +102,7 @@ const VideoEditor = () => {
         </div>
 
         {/* Right Column - Preview & Status */}
-        <div className="space-y-6">
+        <div className="space-y-5 md:space-y-6">
           {/* Preview */}
           <div className="animate-fade-in" style={{ animationDelay: '0.15s' }}>
             <h3 className="mb-3 font-medium text-foreground">Preview</h3>
